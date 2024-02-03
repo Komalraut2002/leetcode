@@ -1,7 +1,7 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
         int n=isConnected.length;
-        int count=0;
+        int count=0; 
         boolean [] visited=new boolean[n];
         for(int i=0;i<n;i++){
                 if(!visited[i]){
@@ -11,12 +11,25 @@ class Solution {
             }
         return count;
    }
-   private static void dfs(int[][] isConnected, int i,boolean[]visited) {
-       visited[i]=true;
-            for (int j = 0; j < isConnected.length; j++) {
-                if (isConnected[i][j]==1 && !visited[j]) {
-                    visited[j] = true;
-                    dfs(isConnected, j,visited);
+   private static void dfs(int[][] isConnected, int idx,boolean[]visited) {
+       int n=isConnected.length;
+       HashMap<Integer,ArrayList<Integer>> map=new HashMap<>();
+        for(int i=0;i<n;i++){
+            map.put(i,new ArrayList<>());
+            }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if (isConnected[i][j]==1 && i!=j){
+                    map.get(i).add(j);
+                    map.get(j).add(i);
+                }
+            }
+        }
+       visited[idx]=true;
+            for (int it:map.get(idx)) {
+                if (!visited[it]) {
+                    visited[it] = true;
+                    dfs(isConnected, it,visited);
                 }
             }
         }
