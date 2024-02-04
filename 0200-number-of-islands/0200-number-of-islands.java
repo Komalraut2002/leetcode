@@ -7,7 +7,7 @@ class Solution {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (!visited[i][j] && grid[i][j] == '1') {
+                if ( grid[i][j] == '1' && !visited[i][j]) {
                     cnt++;
                     dfs(grid, i, j, visited);
                 }
@@ -20,16 +20,16 @@ class Solution {
     static void dfs(char[][] grid, int i, int j, boolean[][] visited) {
         int n = grid.length;
         int m = grid[0].length;
-        visited[i][j] = true;
-
-        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        for (int[] dir : directions) {
-            int nrow = i + dir[0];
-            int ncol = j + dir[1];
-
-            if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && grid[nrow][ncol] == '1' && !visited[nrow][ncol]) {
-                dfs(grid, nrow, ncol, visited);
-            }
+        
+        
+       if (i < 0 || i >= n || j < 0 || j >= m || grid[i][j] == '0' || visited[i][j]) {
+            return;
         }
+        
+        visited[i][j] = true;
+             dfs(grid, i+1, j, visited);
+             dfs(grid, i-1, j, visited);
+             dfs(grid, i, j+1, visited);
+             dfs(grid, i, j-1, visited);
     }
 }
