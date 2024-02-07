@@ -1,49 +1,38 @@
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        int[] ans = new int[numCourses];
-        Stack<Integer> st = new Stack<>();
-        boolean[] visited = new boolean[numCourses];
-        boolean[] path = new boolean[numCourses];
-        HashMap<Integer, List<Integer>> adj = new HashMap<>();
-        
+        HashMap<Integer, ArrayList<Integer>> adj = new HashMap<>();
+        int [] ans=new int[numCourses];
+        int [] arr={};
+        int [] indegree=new int [numCourses];
+        Queue<Integer> q=new LinkedList<>();
+        int cnt=0;
         for (int i = 0; i < numCourses; i++) {
             adj.put(i, new ArrayList<>());
         }
 
         for (int i = 0; i < prerequisites.length; i++) {
-            int u = prerequisites[i][0];
-            int v = prerequisites[i][1];
-            adj.get(v).add(u);
+            int dependent = prerequisites[i][0];
+            int subject = prerequisites[i][1];
+            indegree[dependent]++;
+            adj.get(subject).add(dependent);
         }
-
-        for (int i = 0; i < numCourses; i++) {
-            if (!visited[i]) {
-                if(dfs(i, visited, adj, st,path)){
-                    return new int[0];
+        for(int i=0;i<numCourses;i++){
+            if(indegree[i]==0){
+                q.add(i);
+            }
+        }
+        while(!q.isEmpty()){
+            int front=q.poll();
+            ans[cnt++]=front;
+            for(int it:adj.get(front)){
+                indegree[it]--;
+                if(indegree[it]==0){
+                    q.add(it);
                 }
             }
+
         }
 
-        int index = 0;
-        while (!st.isEmpty()) {
-            ans[index++] = st.pop();
-        }
-        return ans;
-    }
-
-    static boolean dfs(int i, boolean[] visited, HashMap<Integer, List<Integer>> adj, Stack<Integer> st,boolean[] path) {
-        visited[i] = true;
-        path[i]=true;
-        for (int it : adj.get(i)) {
-            if (!visited[it] && dfs(it, visited, adj, st,path)) {
-                return true;
-            }
-            else if(path[it]){
-                return true;
-            }
-        }
-        st.push(i);
-        path[i]=false;
-        return false;
+        return cnt==numCourses?ans:arr;
     }
 }
