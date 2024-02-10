@@ -15,10 +15,26 @@
  */
 class Solution {
     public int maxDepth(TreeNode root) {
+        Queue<TreeNode> q=new LinkedList<>();
         if(root==null){
             return 0;
         }
-        int depth=1+Math.max(maxDepth(root.left),maxDepth(root.right));
+        int depth=0;
+        q.add(root);
+        while(!q.isEmpty()){
+            int n=q.size();
+            for(int i=0;i<n;i++){
+                TreeNode curr=q.poll();
+                if(curr.left!=null){
+                    q.add(curr.left);
+                }
+                if(curr.right!=null){
+                    q.add(curr.right);
+                }
+            }
+            depth++;
+        }
+
         return depth;
     }
 }
