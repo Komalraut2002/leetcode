@@ -1,37 +1,42 @@
-// class ListNode {
-//     int val;
-//     ListNode next;
-
-//     ListNode() {}
-
-//     ListNode(int val) {
-//         this.val = val;
-//     }
-
-//     ListNode(int val, ListNode next) {
-//         this.val = val;
-//         this.next = next;
-//     }
-// }
-
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
-    public boolean isPalindrome(ListNode head) {
-        Stack<ListNode> st = new Stack<>();
-        ListNode current = head;
-
-        while (current != null) {
-            st.push(current);
-            current = current.next;
+    public ListNode reverse(ListNode head){
+        ListNode curr=head;
+        ListNode prev=null;
+        while(curr!=null){
+            ListNode Next=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=Next;
         }
-
-        while (!st.isEmpty()) {
-            ListNode poppedNode = st.pop();
-            if (poppedNode.val != head.val) {
+        return prev;
+    }
+    public boolean isPalindrome(ListNode head) {
+        ListNode slow=head;
+        ListNode fast=head;
+        while(fast.next!=null && fast.next.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        ListNode temp=reverse(slow.next);
+        ListNode first=head;
+        ListNode second=temp;
+        while(second!=null){
+            if(first.val!=second.val){
                 return false;
             }
-            head = head.next;
+            first=first.next;
+            second=second.next;
         }
-
         return true;
     }
 }
