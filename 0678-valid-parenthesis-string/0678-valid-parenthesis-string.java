@@ -1,26 +1,25 @@
 class Solution {
     public boolean checkValidString(String s) {
-        int low = 0;
-        int high = 0;
-        for (int i = 0; i < s.length(); i++) {
+        int n = s.length();
+        int lopenMin = 0, lopenMax = 0;
+        for (int i = 0; i < n; i++) {
             if (s.charAt(i) == '(') {
-                low++;
-                high++;
+                lopenMin++;
+                lopenMax++;
             } else if (s.charAt(i) == ')') {
-                if (low > 0) {
-                    low--;
-                }
-                high--;
+                lopenMax--;
+                lopenMin--;
             } else {
-                if (low > 0) {
-                    low--;
-                }
-                high++;
+                lopenMin--;
+                lopenMax++;
             }
-            if (high < 0) {
-                return false;
+            if (lopenMax < 0) {
+                return false; // )))))))))))))
+            }
+            if (lopenMin < 0) {
+                lopenMin = 0; // ))(((((
             }
         }
-        return low == 0;
+        return lopenMin == 0;
     }
 }
