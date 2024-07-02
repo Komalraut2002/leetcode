@@ -5,7 +5,6 @@ class Solution {
         int l1 = nums1.length;
         int l2 = nums2.length;
         int i = 0, j = 0, k = 0;     
-        ArrayList<Integer> temp=new ArrayList<>();
         while( i < l1 && j < l2){
             if(nums1[i] < nums2[j])
             {
@@ -16,17 +15,10 @@ class Solution {
                 j++;
             }
             else{
-                temp.add(nums1[i]);
-                i++;
+                nums1[k++]=nums1[i++];
                 j++;
             }
-
         }
-        int[]ans=new int[temp.size()];
-        int g=0;
-        for(int it:temp){
-            ans[g++]=it;
-        }
-        return ans;
+        return Arrays.copyOfRange(nums1,0,k);
     }
 }
